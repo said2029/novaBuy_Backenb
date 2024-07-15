@@ -1,8 +1,21 @@
 const Order_md = require("../models/order_model");
 
-const getOrders = async (_, res) => {
+const getOrders = async (req, res) => {
   try {
-    const orders = await Order_md.find();
+    const orders = await Order_md.aggregate([
+      {
+        $match: {
+          ...(req.query.status && { status: req.query.status }),
+          ...(req.query.paymentMethod && {
+            paymentMethod: req.query.paymentMethod,
+          }),
+          createdAt: {
+            $gte: new Date(req.query.startDate),
+            $lte: new Date(req.query.endDate),
+          },
+        },
+      },
+    ]);
     return res.json(orders);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -29,5 +42,5 @@ const CreateOrder = async (req, res) => {
 module.exports = {
   getOrders,
   getById,
-  CreateOrder
+  CreateOrder,
 };

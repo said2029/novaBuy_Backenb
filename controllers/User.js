@@ -2,9 +2,9 @@ const User_md = require("../models/User_model");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
-const get = async (_, res) => {
+const get = async (req, res) => {
   try {
-    const users = await User_md.find();
+    const users = await User_md.find({fullName:new RegExp(req.query.search,"i") });
     return res.json(users);
   } catch (error) {
     return res.status(400).json({ message: error.message });

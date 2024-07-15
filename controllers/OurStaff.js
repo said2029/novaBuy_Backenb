@@ -4,7 +4,9 @@ const jwt = require("jsonwebtoken");
 
 const GetAll = async (req, res) => {
   try {
-    const staff = await staff_md.find();
+    const staff = await staff_md.find({
+      name: new RegExp(req.query.search, "i"),
+    });
     res.json(staff);
   } catch (error) {
     res.status(500).send(error.message);
