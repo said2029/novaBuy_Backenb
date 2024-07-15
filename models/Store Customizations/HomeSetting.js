@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = require("mongodb");
 
-var HomeSettingSchema = new mongoose.Schema({
+var HomeSettingSchema = mongoose.Schema({
   Header_Logo_image: { type: String },
   header_background_image: { type: String },
   Footer_logo_image: { type: String },
@@ -91,7 +91,7 @@ var HomeSettingSchema = new mongoose.Schema({
       slider_title: { type: String },
     },
   ],
-  DelayShoppingProductsID: [ObjectId],
+  DelayShoppingProducts: [ObjectId],
   feature_title_Daily_dicount: { type: String },
   social_facebook: { type: String },
   social_linkedin: { type: String },

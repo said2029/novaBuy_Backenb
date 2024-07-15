@@ -12,8 +12,9 @@ const CouponRouter = require("./routers/Coupon");
 const StaffRoute = require("./routers/OurStaff");
 const CategoryRouter = require("./routers/Category");
 const Sub_category_Router = require("./routers/SubCategory");
-const SettingRouter = require("./routers/Store Customizations/Store_Setting");
+const Store_SettingRouter = require("./routers/Store Customizations/Store_Setting");
 const Store_customiza = require("./routers/Store Customizations/HomeSetting");
+const golble_SettingRouter = require("./routers/Setting");
 const PORT = 3001;
 
 // #region  Routers
@@ -24,8 +25,9 @@ app.use("/coupon", CouponRouter);
 app.use("/staff", StaffRoute);
 app.use("/category", CategoryRouter);
 app.use("/sub_category", Sub_category_Router);
-app.use("/store_setting", SettingRouter);
+app.use("/store_setting", Store_SettingRouter);
 app.use("/store_customiza", Store_customiza);
+app.use("/setting", golble_SettingRouter);
 
 // #endregion
 
