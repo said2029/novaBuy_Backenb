@@ -1,4 +1,6 @@
 const staff_md = require("../models/OurStaff");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const GetAll = async (req, res) => {
   try {
@@ -21,6 +23,8 @@ const GetById = async (req, res) => {
 const Create = async (req, res) => {
   try {
     const newStaff = new staff_md(req.body);
+    const password = bcrypt.hashSync(newStaff.password, 10);
+    newStaff.password = password;
     const staff = await newStaff.save();
     return res.json(staff);
   } catch (error) {
@@ -50,4 +54,17 @@ const Delete = async (req, res) => {
   }
 };
 
-module.exports = { GetAll, GetById, Create, Update, Delete };
+const Login = async (req, res) => {
+  try {
+    const staff = await staff_md.findOne({ email: req.body.email });
+    if (!staff) return res.status(400).send("Invalid email or password");
+    const validPass = bcrypt.compareSync(req.body.password, staff.password);
+    if (!validPass) return res.status(400).send("Invalid email or password");
+    const token = jwt.sign({ id: staff._id }, process.env.JWT_SECRET);
+    return res.json({ token, user: staff });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+module.exports = { GetAll, GetById, Create, Update, Delete, Login };

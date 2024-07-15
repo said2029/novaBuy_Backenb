@@ -4,6 +4,7 @@ const staff_Schema = mongoose.Schema(
     name: String,
     phone: String,
     role: String,
+    image:String,
     email: String,
     password: String,
     is_validate: { type: Boolean, default: true },

@@ -4,6 +4,7 @@ const {
   Create,
   Update,
   Delete,
+  Login
 } = require("../controllers/OurStaff");
 const express = require("express");
 const route = express.Router();
@@ -13,6 +14,7 @@ route.get("/", GetAll);
 route.get("/:id", GetById);
 
 route.post("/create", Create);
+route.post("/login", Login);
 
 route.put("/:id", Update);
 

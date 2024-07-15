@@ -1,4 +1,6 @@
 const User_md = require("../models/User_model");
+const bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
 
 const get = async (_, res) => {
   try {
@@ -21,8 +23,11 @@ const getBayId = async (req, res) => {
 
 const CreateUser = async (req, res) => {
   try {
-    console.log(req.body);
     const user = new User_md(req.body);
+
+    const passorwd = bcrypt.hashSync(user.password, 10);
+    user.password = passorwd;
+
     const newUser = await user.save();
     return res.json(newUser);
   } catch (error) {
@@ -50,6 +55,22 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  try {
+    const user = await User_md.findOne({ email: req.body.email });
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    const validPass = bcrypt.compareSync(req.body.password, user.password);
+
+    if (!validPass)
+      return res.status(400).json({ message: "Invalid password" });
+
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+    return res.json({ user, token });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
 
 module.exports = {
   get,
@@ -57,4 +78,5 @@ module.exports = {
   CreateUser,
   updateUser,
   deleteUser,
+  login
 };

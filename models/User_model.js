@@ -14,6 +14,7 @@ const User_Schema = mongoose.Schema(
       zipCode: { type: String },
     },
     isActive: { type: Boolean, default: true },
+    isVerifed: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
