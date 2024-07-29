@@ -95,12 +95,12 @@ const HomeSetting = mongoose.Schema({
 
 const AboutUsSchema = mongoose.Schema({
   pageHeader: {
-    enable: { type: String },
+    enable: { type: Boolean },
     pageHeaderBackground: { type: String },
     pageTitle: { type: String },
   },
   aboutPage: {
-    enable: { type: String },
+    enable: { type: Boolean },
     topTitle: { type: String },
     topDescription: { type: String },
     boxOneTitle: { type: String },
@@ -111,17 +111,17 @@ const AboutUsSchema = mongoose.Schema({
     boxTwoDescription: { type: String },
   },
   pageTopContentRight: {
-    enable: { type: String },
+    enable: { type: Boolean },
     topContentRightImage: { type: String },
   },
   contentSection: {
-    enable: { type: String },
+    enable: { type: Boolean },
     firstParagraph: { type: String },
     secondParagraph: { type: String },
     contentImage: { type: String },
   },
   ourTeam: {
-    enableThisBlock: { type: String },
+    enableThisBlock: { type: Boolean },
     ourTeamTitle: { type: String },
     ourTeamDescription: { type: String },
     member: [
