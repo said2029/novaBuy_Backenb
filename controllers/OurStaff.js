@@ -6,6 +6,7 @@ const GetAll = async (req, res) => {
   try {
     const staff = await staff_md.find({
       name: new RegExp(req.query.search, "i"),
+      role: new RegExp(req.query.role, "i"),
     });
     res.json(staff);
   } catch (error) {
@@ -24,6 +25,8 @@ const GetById = async (req, res) => {
 
 const Create = async (req, res) => {
   try {
+    const chack = await staff_md.find({ email: req.body.email });
+    if (chack.length >= 1) return res.status(400).send("User already exists.");
     const newStaff = new staff_md(req.body);
     const password = bcrypt.hashSync(newStaff.password, 10);
     newStaff.password = password;
@@ -36,10 +39,15 @@ const Create = async (req, res) => {
 
 const Update = async (req, res) => {
   try {
+    const staffChack = await staff_md.findById(req.params.id);
     const staff = await staff_md.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
     if (!staff) return res.status(404).send("staff not found");
+    if (staffChack.password !== staff.password) {
+      const password = bcrypt.hashSync(staff.password, 10);
+      staff.password = password;
+    }
     const newStaff = await staff.save();
     return res.json(newStaff);
   } catch (error) {
