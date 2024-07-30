@@ -1,10 +1,9 @@
-const store_cu_md = require("../../models/Store Customizations/Store_Setting");
-
+const { default: mongoose } = require("mongoose");
+const Setting_md = require("../../models/Store Customizations/Store_Setting");
 
 const get = async (_, res) => {
   try {
-    const store_cu = await store_cu_md.findOne();
-    if (!store_cu) return res.status(404).json({ message: "Setting not found" });
+    const store_cu = await Setting_md.findOne();
     return res.json(store_cu);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -12,9 +11,9 @@ const get = async (_, res) => {
 };
 const update = async (req, res) => {
   try {
-    const one = await store_cu_md.findOne();
-    const store_cu = await store_cu_md.findOneAndUpdate(
-      { _id: one?._id || undefined },
+    const one = await Setting_md.findOne();
+    const store_cu = await Setting_md.findOneAndUpdate(
+      { _id: one?._id ?? new mongoose.Types.ObjectId() },
       req.body,
       {
         upsert: true,

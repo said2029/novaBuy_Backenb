@@ -10,9 +10,9 @@ const SettingSchema = new Schema({
   receiptSizeWidth: { type: Number },
   shopName: { type: String },
   companyName: { type: String },
-  vatNumber: { type: String },
+  vatNumber: { type: Number },
   address: { type: String },
-  postCode: { type: String },
+  postCode: { type: Number },
   contactEmail: { type: String },
   website: { type: String },
 });

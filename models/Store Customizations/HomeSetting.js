@@ -25,30 +25,30 @@ const HomeSetting = mongoose.Schema({
       sliderButtonLink: { type: String, default: "" },
     },
   ],
-  superDiscountCouponIsActive: { type: String, default: "" },
+  superDiscountCouponIsActive: { type: Boolean, default: false },
   superDiscountCouponsCode: [{ type: String, default: "" }],
   superDiscountTitle: { type: String, default: "" },
-  promotionBannerIsActive: { type: String, default: "" },
+  promotionBannerIsActive: { type: Boolean, default: false },
   promotionBannerTitle: { type: String, default: "" },
   promotionBannerDescription: { type: String, default: "" },
   promotionBannerButtonName: { type: String, default: "" },
   promotionBannerButtonLink: { type: String, default: "" },
-  popularProductsIsActive: { type: String, default: "" },
+  popularProductsIsActive: { type: Boolean, default: false },
   popularProductsDiscriotion: { type: String, default: "" },
   popularProductsTitle: { type: String, default: "" },
-  popularProductsProductsLimit: { type: String, default: "" },
-  quickDeliveryIsActive: { type: String, default: "" },
+  popularProductsProductsLimit: { type: String, default: false },
+  quickDeliveryIsActive: { type: Boolean, default: false },
   quickDeliverySectionSubTitle: { type: String, default: "" },
   quickDeliverySectionTitle: { type: String, default: "" },
   quickDeliverySectionDescription: { type: String, default: "" },
   quickDeliverySectionButtonName: { type: String, default: "" },
   quickDeliverySectionButtonLink: { type: String, default: "" },
   quickDeliverySectionImage: { type: String, default: "" },
-  latestDiscountedProductsIsActive: { type: String, default: "" },
+  latestDiscountedProductsIsActive: { type: Boolean, default: false },
   latestDiscountedProductsTitle: { type: String, default: "" },
   latestDiscountedProductsDescription: { type: String, default: "" },
   latestDiscountedProductsLimit: { type: String, default: "" },
-  getYourDailyNeedsIsActive: { type: String, default: "" },
+  getYourDailyNeedsIsActive: { type: Boolean, default: false },
   getYourDailyNeedsTitle: { type: String, default: "" },
   getYourDailyNeedsDescription: { type: String, default: "" },
   getYourDailyNeedsTitleImageLeft: { type: String, default: "" },
@@ -57,14 +57,14 @@ const HomeSetting = mongoose.Schema({
   getYourDailyNeedsTitleButton1Link: { type: String, default: "" },
   getYourDailyNeedsTitleButton2Image: { type: String, default: "" },
   getYourDailyNeedsTitleButton2Link: { type: String, default: "" },
-  featurePromoIsActive: { type: String, default: "" },
+  featurePromoIsActive: { type: Boolean, default: false },
   featurePromoSectionFreeShipping: { type: String, default: "" },
   featurePromoSectionSupport: { type: String, default: "" },
   featurePromoSectionSecurePayment: { type: String, default: "" },
   featurePromoSectionLatestOffer: { type: String, default: "" },
   footerBlocks: [
     {
-      active: { type: String, default: "" },
+      active: { type: Boolean, default: false },
       title: { type: String, default: "" },
       link1: { type: String, default: "" },
       link2: { type: String, default: "" },
@@ -73,13 +73,13 @@ const HomeSetting = mongoose.Schema({
     },
   ],
   footerBlock: {
-    active: { type: String, default: "" },
+    active: { type: Boolean, default: false },
     footerLogo: { type: String, default: "" },
     address: { type: String, default: "" },
     phone: { type: String, default: "" },
     email: { type: String, default: "" },
     socialLinks: {
-      active: { type: String, default: "" },
+      active: { type: Boolean, default: false },
       facebook: { type: String, default: "" },
       twitter: { type: String, default: "" },
       pinterest: { type: String, default: "" },
@@ -87,9 +87,9 @@ const HomeSetting = mongoose.Schema({
       whatsApp: { type: String, default: "" },
     },
   },
-  paymentMethodActive: { type: String, default: "" },
+  paymentMethodActive: { type: Boolean, default: false },
   paymentMethodImage: { type: String, default: "" },
-  footerBottomContactActive: { type: String, default: "" },
+  footerBottomContactActive: { type: Boolean, default: false },
   footerBottomContactNumber: { type: String, default: "" },
 });
 
@@ -135,16 +135,16 @@ const AboutUsSchema = mongoose.Schema({
 });
 const FaqsSchema = mongoose.Schema({
   pageHeader: {
-    enable: { type: String },
+    enable: { type: Boolean },
     pageHeaderBackground: { type: String },
     pageTitle: { type: String },
   },
   leftColumn: {
-    enable: { type: String },
+    enable: { type: Boolean },
     leftImage: { type: String },
   },
   faqs: {
-    enable: { type: String },
+    enable: { type: Boolean },
     faq: [
       {
         faqTitle: { type: String },
@@ -155,33 +155,33 @@ const FaqsSchema = mongoose.Schema({
 });
 const ContactUsSchema = mongoose.Schema({
   pageHeader: {
-    enable: { type: String },
+    enable: { type: Boolean },
     backgroundImage: { type: String },
     pageTitle: { type: String },
   },
   emailUsBox: {
-    enable: { type: String },
+    enable: { type: Boolean },
     title: { type: String },
     email: { type: String },
     text: { type: String },
   },
   callUsBox: {
-    enable: { type: String },
+    enable: { type: Boolean },
     title: { type: String },
     phone: { type: String },
     text: { type: String },
   },
   addressBox: {
-    enable: { type: String },
+    enable: { type: Boolean },
     title: { type: String },
     address: { type: String },
   },
   middleLeftColumn: {
-    enable: { type: String },
+    enable: { type: Boolean },
     middleLeftImage: { type: String },
   },
   contactForm: {
-    enable: { type: String },
+    enable: { type: Boolean },
     contactFormTitle: { type: String },
     contactFormDescription: { type: String },
   },
@@ -223,13 +223,13 @@ const CheckoutSchema = mongoose.Schema({
 
 const PrivacyTCSchema = mongoose.Schema({
   privacyPolicy: {
-    enable: { type: String },
+    enable: { type: Boolean },
     background: { type: String },
     title: { type: String },
     pageContent: { type: String },
   },
   termsAndConditions: {
-    enable: { type: String },
+    enable: { type: Boolean },
     background: { type: String },
     title: { type: String },
     pageContent: { type: String },

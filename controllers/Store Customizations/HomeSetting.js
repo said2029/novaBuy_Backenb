@@ -14,7 +14,7 @@ const update = async (req, res) => {
   try {
     const one = await Setting_md.findOne();
     const setting = await Setting_md.findOneAndUpdate(
-      { _id: one?._id ?? new mongoose.Types.ObjectId() },
+      { _id: one?._id.toString() ?? new mongoose.Types.ObjectId() },
       req.body,
       {
         upsert: true,
@@ -23,6 +23,7 @@ const update = async (req, res) => {
     );
     return res.json(setting);
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ message: error.message });
   }
 };

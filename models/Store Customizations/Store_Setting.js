@@ -17,6 +17,6 @@ const Setting_Schema = mongoose.Schema({
   tawkChatPropertyId: { type: String },
   tawkChatWidgetId: { type: String },
 });
-const Setting_md = mongoose.model("Setting", Setting_Schema);
+const Setting_md = mongoose.model("Store_Setting", Setting_Schema);
 
 module.exports = Setting_md;
