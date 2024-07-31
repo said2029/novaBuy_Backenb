@@ -1,9 +1,13 @@
 const express = require("express");
 var bodyParser = require("body-parser");
+const cors = require("cors");
+const compression=require("compression");
 require("./DB");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
+app.use(compression());
 
 const UserRouter = require("./routers/User");
 const ProductRouter = require("./routers/Products");

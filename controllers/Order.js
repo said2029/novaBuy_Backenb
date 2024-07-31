@@ -2,6 +2,9 @@ const Order_md = require("../models/order_model");
 
 const getOrders = async (req, res) => {
   try {
+    const page = req.query.page || 0;
+    const limit = 10;
+    const count = await Order_md.countDocuments();
     const orders = await Order_md.aggregate([
       {
         $match: {
@@ -9,14 +12,44 @@ const getOrders = async (req, res) => {
           ...(req.query.paymentMethod && {
             paymentMethod: req.query.paymentMethod,
           }),
-          createdAt: {
-            $gte: new Date(req.query.startDate),
-            $lte: new Date(req.query.endDate),
-          },
+          ...(req.query.startDate && {
+            createdAt: {
+              $gte: new Date(req.query.startDate),
+              $lte: new Date(req.query.endDate).setDate(1),
+            },
+          }),
+        },
+      },
+      {
+        $skip: page * limit,
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "customerId",
+          foreignField: "_id",
+          as: "userDetals",
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "items.productId",
+          foreignField: "_id",
+          as: "products",
+        },
+      },
+
+      {
+        $match: {
+          ...(req.query.search && { "products.titel": req.query.search }),
         },
       },
     ]);
-    return res.json(orders);
+    return res.json({ totalOrder: count, limit, orders });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -32,6 +65,7 @@ const getById = async (req, res) => {
 const CreateOrder = async (req, res) => {
   try {
     const newOrder = new Order_md(req.body);
+    newOrder.InvocId = newOrder._id.toString().slice(-6);
     const result = await newOrder.save();
     return res.status(201).json(result);
   } catch (error) {
@@ -39,8 +73,22 @@ const CreateOrder = async (req, res) => {
   }
 };
 
+const Update = async (req, res) => {
+  try {
+    const updatedOrder = await Order_md.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    return res.json(updatedOrder);
+  } catch (error) {
+    return res.status(404).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getOrders,
   getById,
   CreateOrder,
+  Update,
 };
