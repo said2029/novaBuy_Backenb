@@ -4,8 +4,17 @@ var jwt = require("jsonwebtoken");
 
 const get = async (req, res) => {
   try {
-    const users = await User_md.find({fullName:new RegExp(req.query.search,"i") });
-    return res.json(users);
+    const page = parseInt(req.query.page) || 0;
+    const limit = 10;
+    const count = await User_md.countDocuments()
+      .skip(page * limit)
+      .limit(limit);
+    const users = await User_md.find({
+      fullName: new RegExp(req.query.search, "i"),
+    })
+      .skip(page * limit)
+      .limit(limit);
+    return res.json({ totalUser: count, limit, users });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
@@ -78,5 +87,5 @@ module.exports = {
   CreateUser,
   updateUser,
   deleteUser,
-  login
+  login,
 };
