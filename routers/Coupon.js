@@ -12,6 +12,6 @@ router.get("/", getCoupons);
 router.get("/:id", getById);
 router.post("/create", CreateConpon);
 router.delete("/:id", Delete);
-router.put("/:id", UpdateCoupon);
+router.put("/update/:id", UpdateCoupon);
 
 module.exports = router;

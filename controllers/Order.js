@@ -4,8 +4,7 @@ const getOrders = async (req, res) => {
   try {
     const page = req.query.page || 0;
     const limit = 10;
-    const count = await Order_md.countDocuments();
-    const orders = await Order_md.aggregate([
+    const filter = [
       {
         $match: {
           ...(req.query.status && { status: req.query.status }),
@@ -21,11 +20,14 @@ const getOrders = async (req, res) => {
         },
       },
       {
-        $skip: page * limit,
+        $match: {
+          ...(req.query.search && { "products.titel": req.query.search }),
+        },
       },
-      {
-        $limit: limit,
-      },
+    ];
+    const count = await Order_md.aggregate([...filter]);
+    const orders = await Order_md.aggregate([
+      ...filter,
       {
         $lookup: {
           from: "users",
@@ -35,6 +37,12 @@ const getOrders = async (req, res) => {
         },
       },
       {
+        $skip: page * limit,
+      },
+      {
+        $limit: limit,
+      },
+      {
         $lookup: {
           from: "products",
           localField: "items.productId",
@@ -42,14 +50,8 @@ const getOrders = async (req, res) => {
           as: "products",
         },
       },
-
-      {
-        $match: {
-          ...(req.query.search && { "products.titel": req.query.search }),
-        },
-      },
     ]);
-    return res.json({ totalOrder: count, limit, orders });
+    return res.json({ totalOrder: count.length, limit, orders });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
