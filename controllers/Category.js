@@ -3,7 +3,20 @@ const category_md = require("../models/Category");
 
 const getAll = async (req, res) => {
   try {
-    const categoryd = await category_md.aggregate([
+    const search = new RegExp(req.query.search || "", "i"),
+      page = req.query.page || 0,
+      limit = 10;
+    const count = await category_md.countDocuments({ name: search });
+    const body = await category_md.aggregate([
+      {
+        $match: { name: search },
+      },
+      {
+        $skip: page * limit,
+      },
+      {
+        $limit: limit,
+      },
       {
         $lookup: {
           from: "sub_categories",
@@ -13,9 +26,9 @@ const getAll = async (req, res) => {
         },
       },
     ]);
-    return res.json(categoryd);
+    return res.json({ body, count, limit });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send(error.message);
   }
 };
 
@@ -36,30 +49,28 @@ const getById = async (req, res) => {
     ]);
     return res.json(category);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send(error.message);
   }
 };
 
 const create = async (req, res) => {
   try {
     const category = new category_md(req.body);
-    const newCategory = await category.save();
-    return res.json(newCategory);
+    const body = await category.save();
+    return res.json(body);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send(error.message);
   }
 };
 
 const update = async (req, res) => {
   try {
-    const category = await category_md.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    return res.json(category);
+    const body = await category_md.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    return res.json(body);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send(error.message);
   }
 };
 
@@ -68,7 +79,7 @@ const Delele = async (req, res) => {
     const category = await category_md.findByIdAndDelete(req.params.id);
     return res.json(category);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send(error.message);
   }
 };
 
