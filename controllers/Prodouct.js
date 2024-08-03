@@ -55,15 +55,33 @@ const GetById = async (req, res) => {
 
 const GetAll = async (req, res) => {
   try {
-    const MaxProducts = 15;
-    const countDocuments = await product_md.countDocuments();
-    const products = await product_md.aggregate([
+    const limit = 15;
+    const count = await product_md.countDocuments();
+    const page = parseInt(req.query.page) || 0;
+    const body = await product_md.aggregate([
       {
         $lookup: {
           from: "categories",
           localField: "category",
           foreignField: "_id",
           as: "category",
+        },
+      },
+      {
+        $match: {
+          titel: new RegExp(req.query.search || "", "i"),
+          ...(req.query.isActive != "undefined" && {
+            isActive: req.query.isActive.toLowerCase() == "true",
+          }),
+          ...(req.query.category != "undefined" && {
+            "category.name": req.query.category,
+          }),
+        },
+      },
+      {
+        $sort: {
+          ...(req.query.PriceSort && { salePrice: +req.query.PriceSort }),
+          createdAt: 1,
         },
       },
       {
@@ -75,31 +93,13 @@ const GetAll = async (req, res) => {
         },
       },
       {
-        $match: {
-          titel: new RegExp(req.query.search, "i"),
-          category: {
-            $elemMatch: { name: new RegExp(req.query.categoryName, "i") },
-          },
-          ...(req.query.subCategoryId && {
-            subCategory: new mongoose.Types.ObjectId(req.query.subCategoryId),
-          }),
-          ...(req.query.isActive && { isActive: req.query.isActive }),
-        },
+        $skip: page * limit,
       },
       {
-        $sort: {
-          ...(req.query.PriceSort && { salePrice: +req.query.PriceSort }),
-          createdAt: 1,
-        },
-      },
-      {
-        $skip: +req.query.page ? (+req.query.page - 1) * MaxProducts : 0,
-      },
-      {
-        $limit: MaxProducts,
+        $limit: limit,
       },
     ]);
-    return res.json({ products, countDocuments, limit: MaxProducts });
+    return res.json({ body, count, limit });
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message);

@@ -15,7 +15,7 @@ const productSchema = mongoose.Schema(
     rate: String,
     price: Number,
     tags: [String],
-    slug: String,
+    slug: {type:String,unique:true},
     attribute: [
       {
         name: String,
@@ -25,7 +25,7 @@ const productSchema = mongoose.Schema(
         stock: { type: String },
       },
     ],
-    isActive: { type: String, default: "true" },
+    isActive: { type: Boolean, default: "true" },
   },
   { timestamps: true }
 );
