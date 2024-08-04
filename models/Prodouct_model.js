@@ -15,17 +15,21 @@ const productSchema = mongoose.Schema(
     rate: String,
     price: Number,
     tags: [String],
-    slug: {type:String,unique:true},
+    slug: { type: String, unique: true },
     attribute: [
       {
-        name: String,
-        values: [String],
-        salePrice: { type: mongoose.Types.Decimal128 },
-        price: Number,
-        stock: { type: String },
+        attribute_id: { type: mongoose.Types.ObjectId },
+        values: [
+          {
+            value: { name: String, value: mongoose.Types.ObjectId  },
+            salePrice: { type: mongoose.Types.Decimal128 },
+            price: Number,
+            stock: { type: String },
+          },
+        ],
       },
     ],
-    isActive: { type: Boolean, default: "true" },
+    isActive: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
