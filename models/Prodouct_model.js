@@ -7,13 +7,13 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     discription: { type: String, required: true },
-    salePrice: { type: mongoose.Types.Decimal128, required: true },
+    salePrice: { type: String, required: true },
     category: { type: mongoose.Types.ObjectId, required: true },
     subCategory: { type: [mongoose.Types.ObjectId] },
     stock: { type: String, required: true },
     images: { type: [String], required: true },
     rate: String,
-    price: Number,
+    price: String,
     tags: [String],
     slug: { type: String, unique: true },
     attribute: [
@@ -21,9 +21,9 @@ const productSchema = mongoose.Schema(
         attribute_id: { type: mongoose.Types.ObjectId },
         values: [
           {
-            value: { name: String, value: mongoose.Types.ObjectId  },
-            salePrice: { type: mongoose.Types.Decimal128 },
-            price: Number,
+            name: { type: String },
+            salePrice: { type: String },
+            price:  { type: String },
             stock: { type: String },
           },
         ],

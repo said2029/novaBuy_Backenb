@@ -93,6 +93,14 @@ const GetAll = async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: "attributes",
+          localField: "attribute.attribute_id",
+          foreignField: "_id",
+          as: "Attrubute",
+        },
+      },
+      {
         $skip: page * limit,
       },
       {
