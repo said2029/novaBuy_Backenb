@@ -20,6 +20,7 @@ const Store_SettingRouter = require("./routers/Store Customizations/Store_Settin
 const Store_customiza = require("./routers/Store Customizations/HomeSetting");
 const golble_SettingRouter = require("./routers/Setting");
 const Attribute_Router = require("./routers/Attribuets");
+const route = require("./routers/Dashboard");
 const PORT = 3001;
 
 // #region  Routers
@@ -34,6 +35,7 @@ app.use("/store_setting", Store_SettingRouter);
 app.use("/store_customiza", Store_customiza);
 app.use("/setting", golble_SettingRouter);
 app.use("/attribute", Attribute_Router);
+app.use("/dasboard", route);
 
 // #endregion
 
