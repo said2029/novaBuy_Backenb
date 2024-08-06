@@ -26,29 +26,33 @@ const filterOrdersStatus = async (status) => {
 };
 
 const Summary = async () => {
-  const Yesterday = await filterOrdersData(
+  let Yesterday = await filterOrdersData(
     moment().subtract(1, "d").format("YYYY-MM-DD"),
     moment().format("YYYY-MM-DD")
   );
-  const Today = await filterOrdersData(
+  Yesterday = Yesterday.reduce((sum, order) => sum + +order.totalAmount, 0);
+  let Today = await filterOrdersData(
     moment().format("YYYY-MM-DD"),
     moment().add(1, "day").format("YYYY-MM-DD")
   );
+  Today = Today.reduce((sum, order) => sum + +order.totalAmount, 0);
   // this month
-  const ThisMonth = await filterOrdersData(
+  let ThisMonth = await filterOrdersData(
     moment().startOf("month").format("YYYY-MM-DD"),
     moment().add(1, "day").format("YYYY-MM-DD")
   );
+  ThisMonth = ThisMonth.reduce((sum, order) => sum + +order.totalAmount, 0);
   // last month
-  const LastMonth = await filterOrdersData(
+  let LastMonth = await filterOrdersData(
     moment().subtract(1, "month").startOf("month").format("YYYY-MM-DD"),
     moment().startOf("month").format("YYYY-MM-DD")
   );
-  const Summary = {
+  LastMonth = LastMonth.reduce((sum, order) => sum + +order.totalAmount, 0);
+  let Summary = {
     today: Today,
     Yesterday: Yesterday,
     ThisMonth: ThisMonth,
-    LastMonth,
+    LastMonth: LastMonth,
   };
   return Summary;
 };
@@ -77,6 +81,9 @@ const Weekly_sales = async () => {
     dataNow.subtract(1, "day");
     dataEnd.subtract(1, "day");
   }
+  orders.reverse();
+  Labels.reverse();
+  sale.reverse();
 
   return { orders, Labels, sale };
 };
@@ -136,7 +143,17 @@ const BestSellingProducts = async () => {
       bast[pro.titel] = (bast[pro.titel] || 0) + pro.salePrice;
     });
 
-    return bast;
+    const lables = [],
+      values = [];
+
+    Object.entries(bast).map(([key, value]) => {
+      lables.push(key);
+      values.push(value);
+    });
+
+    // remove the top 6 products
+
+    return { lables: lables?.slice(0, 6), values: values?.slice(0, 6) };
   } catch (error) {
     throw error;
   }
@@ -148,7 +165,7 @@ const Dashboard = async (req, res) => {
   const WeeklySales = await Weekly_sales();
   const best_Products = await BestSellingProducts();
   try {
-    const body = { summary, orderStatus, WeeklySales };
+    const body = { summary, orderStatus, WeeklySales, best_Products };
     return res.json(body);
   } catch (error) {
     return res.status(500).json({ message: error.message });

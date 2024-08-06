@@ -26,7 +26,7 @@ const HomeSetting = mongoose.Schema({
     },
   ],
   superDiscountCouponIsActive: { type: Boolean, default: false },
-  superDiscountCouponsCode: [{ type: String, default: "" }],
+  superDiscountCouponsCode: [{name:String,value:String}],
   superDiscountTitle: { type: String, default: "" },
   promotionBannerIsActive: { type: Boolean, default: false },
   promotionBannerTitle: { type: String, default: "" },
