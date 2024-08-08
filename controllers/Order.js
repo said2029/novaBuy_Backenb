@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongoose").Types;
 const Order_md = require("../models/order_model");
 
 const getOrders = async (req, res) => {
@@ -58,8 +59,28 @@ const getOrders = async (req, res) => {
 };
 const getById = async (req, res) => {
   try {
-    const order = await Order_md.findById(req.params.id);
-    return res.json(order);
+    const order = await Order_md.aggregate([
+      {
+        $match: { _id: new ObjectId(req.params.id) },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "customerId",
+          foreignField: "_id",
+          as: "userDetals",
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "items.productId",
+          foreignField: "_id",
+          as: "products",
+        },
+      },
+    ]);
+    return res.json(order[0]);
   } catch (error) {
     return res.status(404).json({ error: error.message });
   }

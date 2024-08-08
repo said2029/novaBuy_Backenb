@@ -18,7 +18,6 @@ const orderSchema = mongoose.Schema({
   deliveryAddress: {
     street: String,
     city: String,
-    state: String,
     zipCode: String,
     country: String,
   },
