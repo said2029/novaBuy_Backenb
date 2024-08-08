@@ -22,9 +22,11 @@ const golble_SettingRouter = require("./routers/Setting");
 const Attribute_Router = require("./routers/Attribuets");
 const Dashboard_route = require("./routers/Dashboard");
 const NodeMiler_route = require("./controllers/nodeMiler");
+const Home_route = require("./routers/home");
 const PORT = 3001;
 
 // #region  Routers
+app.use("/", Home_route);
 app.use("/user", UserRouter);
 app.use("/product", ProductRouter);
 app.use("/order", OrderRouter);
