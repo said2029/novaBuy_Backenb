@@ -1,7 +1,7 @@
 const express = require("express");
 var bodyParser = require("body-parser");
 const cors = require("cors");
-const compression=require("compression");
+const compression = require("compression");
 require("./DB");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,7 +23,7 @@ const Attribute_Router = require("./routers/Attribuets");
 const Dashboard_route = require("./routers/Dashboard");
 const NodeMiler_route = require("./controllers/nodeMiler");
 const Home_route = require("./routers/home");
-const PORT = 3001;
+const PORT = process.env.POST || 3001;
 
 // #region  Routers
 app.use("/", Home_route);
