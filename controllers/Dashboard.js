@@ -172,4 +172,4 @@ const Dashboard = async (req, res) => {
   }
 };
 
-module.exports = { Dashboard };
+module.exports =  Dashboard ;

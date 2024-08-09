@@ -2,8 +2,8 @@ const express = require("express");
 var bodyParser = require("body-parser");
 const cors = require("cors");
 const compression = require("compression");
-require("./DB");
 const app = express();
+require("./DB");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -24,9 +24,7 @@ const Dashboard_route = require("./routers/Dashboard");
 const NodeMiler_route = require("./controllers/nodeMiler");
 const Home_route = require("./routers/home");
 
-const PORT = process.env.PORT;
-
-// #region  Routers
+// // #region  Routers
 app.use("/", Home_route);
 app.use("/user", UserRouter);
 app.use("/product", ProductRouter);
@@ -43,8 +41,11 @@ app.use("/dasboard", Dashboard_route);
 app.use("/sendEmail", NodeMiler_route);
 
 // #endregion
+app.get("/", (req, res) => {
+  res.send("Hello World from Backend");
+});
 
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
