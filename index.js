@@ -24,7 +24,7 @@ const Dashboard_route = require("./routers/Dashboard");
 const NodeMiler_route = require("./controllers/nodeMiler");
 const Home_route = require("./routers/home");
 
-// const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001;
 
 // #region  Routers
 app.use("/", Home_route);
@@ -44,8 +44,8 @@ app.use("/sendEmail", NodeMiler_route);
 
 // #endregion
 
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 module.exports = app;
