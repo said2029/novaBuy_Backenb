@@ -24,7 +24,7 @@ const Dashboard_route = require("./routers/Dashboard");
 const NodeMiler_route = require("./controllers/nodeMiler");
 const Home_route = require("./routers/home");
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3000;
 
 // #region  Routers
 app.use("/", Home_route);
