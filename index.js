@@ -23,7 +23,8 @@ const Attribute_Router = require("./routers/Attribuets");
 const Dashboard_route = require("./routers/Dashboard");
 const NodeMiler_route = require("./controllers/nodeMiler");
 const Home_route = require("./routers/home");
-const PORT = process.env.POST || 3001;
+
+const PORT = process.env.PORT || 3001;
 
 // #region  Routers
 app.use("/", Home_route);
@@ -46,3 +47,5 @@ app.use("/sendEmail", NodeMiler_route);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;
