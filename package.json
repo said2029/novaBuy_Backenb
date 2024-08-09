@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "env-cmd -f .env nodemon app.js",
-    "start": "node ./bin/www"
+    "dev": "env-cmd -f .env nodemon index.js",
+    "start": "node index.js"
   },
   "engines": {
     "node": "20.x"
