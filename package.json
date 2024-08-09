@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "env-cmd -f .env node api/index.js",
-    "start": "node index.js"
+    "dev": "env-cmd -f .env node api/index.js",
+    "start": "node index.js",
+    "vercel-build": "echo hello"
   },
   "engines": {
     "node": "20.x"
